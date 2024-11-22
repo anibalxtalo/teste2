@@ -26,25 +26,6 @@ export function renderPerfil() {
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
                 cursor: pointer;
             }
-            .custom-profile-edit-overlay {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                display: none;
-                background: rgba(0, 0, 0, 0.6);
-                color: white;
-                font-size: 14px;
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-            }
-            .custom-profile-image-container:hover .custom-profile-edit-overlay {
-                display: flex;
-            }
             .custom-profile-dropdown {
                 display: none;
                 position: absolute;
@@ -90,8 +71,7 @@ export function renderPerfil() {
         <div class="custom-profile-container">
             <h2 class="custom-profile-header">Perfil</h2>
             <div class="custom-profile-image-container">
-                <img id="custom-profile-img" src="https://via.placeholder.com/150" alt="Foto do Perfil" class="custom-profile-image">
-                <div class="custom-profile-edit-overlay" onclick="customToggleDropdown()">MUDAR FOTO DO PERFIL</div>
+                <img id="custom-profile-img" src="https://via.placeholder.com/150" alt="Foto do Perfil" class="custom-profile-image" onclick="customToggleDropdown()">
                 <div id="custom-dropdown-menu" class="custom-profile-dropdown">
                     <button onclick="customShowPhoto()">Mostrar foto</button>
                     <button onclick="customStartCamera()">Tirar foto</button>
@@ -133,11 +113,6 @@ export function renderPerfil() {
 }
 
 // Funções Auxiliares
-function customToggleDropdown() {
-    const dropdown = document.getElementById('custom-dropdown-menu');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-}
-
 function customShowPhoto() {
     const imgSrc = document.getElementById('custom-profile-img').src;
     const newWindow = window.open("", "_blank");
