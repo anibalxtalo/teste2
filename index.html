@@ -14,6 +14,7 @@
 
         html, body {
             height: 100%;
+            font-family: Arial, sans-serif;
         }
 
         .container {
@@ -22,7 +23,7 @@
             width: 100%;
         }
 
-        .div1 {
+        .sidebar {
             width: 8.33%; /* 1/12 */
             background-color: #f4f4f4;
             display: flex;
@@ -32,7 +33,64 @@
             padding: 10px;
         }
 
-        .div2 {
+        .top-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .top-buttons button {
+            width: 50px;
+            height: 50px;
+            background-color: #90caf9;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .top-buttons button:hover {
+            background-color: #42a5f5;
+        }
+
+        .bottom-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-btn {
+            width: 50px;
+            height: 50px;
+            background-color: #90caf9;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .settings-btn:hover {
+            background-color: #42a5f5;
+        }
+
+        .profile-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #42a5f5;
+        }
+
+        .content {
             width: 33.33%; /* 4/12 */
             background-color: #ffffff;
             padding: 20px;
@@ -42,7 +100,7 @@
             align-items: center;
         }
 
-        .div3 {
+        .placeholder {
             width: 58.33%; /* 7/12 */
             background-color: #e8e8e8;
             display: flex;
@@ -50,54 +108,7 @@
             align-items: center;
         }
 
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .button-group button,
-        .settings button {
-            width: 100%;
-            padding: 10px;
-            background-color: #90caf9;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-        }
-
-        .button-group button:hover,
-        .settings button:hover {
-            background-color: #42a5f5;
-        }
-
-        .settings {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .profile {
-            margin-top: 10px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .profile img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .content {
+        .dynamic-content {
             font-size: 18px;
             color: #333;
             text-align: center;
@@ -106,81 +117,95 @@
 </head>
 <body>
     <div class="container">
-        <!-- Div 1: Menu -->
-        <div class="div1">
-            <div class="button-group">
-                <button onclick="loadModule('robo')"><span class="material-icons">android</span></button>
-                <button onclick="loadModule('humano')"><span class="material-icons">person</span></button>
-                <button onclick="loadModule('grupo')"><span class="material-icons">group</span></button>
-                <button onclick="loadModule('entrega')"><span class="material-icons">local_shipping</span></button>
-                <button onclick="loadModule('shopping')"><span class="material-icons">shopping_cart</span></button>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="top-buttons">
+                <button onclick="loadModule('robo')" aria-label="Robô">
+                    <span class="material-icons">android</span>
+                </button>
+                <button onclick="loadModule('humano')" aria-label="Humano">
+                    <span class="material-icons">person</span>
+                </button>
+                <button onclick="loadModule('grupo')" aria-label="Grupo">
+                    <span class="material-icons">group</span>
+                </button>
+                <button onclick="loadModule('entrega')" aria-label="Entrega">
+                    <span class="material-icons">local_shipping</span>
+                </button>
+                <button onclick="loadModule('shopping')" aria-label="Compras">
+                    <span class="material-icons">shopping_cart</span>
+                </button>
             </div>
-            <div class="settings">
-                <button onclick="loadModule('configuracao')"><span class="material-icons">settings</span></button>
-                <div class="profile" onclick="loadModule('perfil')">
-                    <img src="https://via.placeholder.com/50" alt="Perfil">
-                </div>
+            <div class="bottom-section">
+                <button class="settings-btn" onclick="loadModule('configuracao')" aria-label="Configurações">
+                    <span class="material-icons">settings</span>
+                </button>
+                <img src="https://via.placeholder.com/60" alt="Foto de Perfil" class="profile-img" onclick="loadModule('perfil')">
             </div>
         </div>
 
-        <!-- Div 2: Conteúdo Dinâmico -->
-        <div class="div2" id="dynamic-content">
-            <div class="content">Selecione uma opção do menu à esquerda.</div>
+        <!-- Dynamic Content -->
+        <div class="content" id="dynamic-content">
+            <div class="dynamic-content">Selecione uma opção do menu à esquerda.</div>
         </div>
 
-        <!-- Div 3: Placeholder -->
-        <div class="div3">
-            <div class="content">Área reservada para futuros conteúdos.</div>
+        <!-- Placeholder -->
+        <div class="placeholder">
+            <div class="dynamic-content">Área reservada para futuros conteúdos.</div>
         </div>
     </div>
 
     <script>
-        // Sistema modular para carregar conteúdos dinâmicos
         function loadModule(moduleName) {
             const modules = {
                 robo: () => {
                     document.getElementById('dynamic-content').innerHTML = `
-                        <div class="content">Bem-vindo ao módulo Robô!</div>
+                        <div class="dynamic-content">Bem-vindo ao módulo Robô!</div>
                     `;
                 },
                 humano: () => {
                     document.getElementById('dynamic-content').innerHTML = `
-                        <div class="content">Bem-vindo ao módulo Humano!</div>
+                        <div class="dynamic-content">Bem-vindo ao módulo Humano!</div>
                     `;
                 },
                 grupo: () => {
                     document.getElementById('dynamic-content').innerHTML = `
-                        <div class="content">Bem-vindo ao módulo Grupo!</div>
+                        <div class="dynamic-content">Bem-vindo ao módulo Grupo!</div>
                     `;
                 },
                 entrega: () => {
                     document.getElementById('dynamic-content').innerHTML = `
-                        <div class="content">Bem-vindo ao módulo Entrega!</div>
+                        <div class="dynamic-content">Bem-vindo ao módulo Entrega!</div>
                     `;
                 },
                 shopping: () => {
                     document.getElementById('dynamic-content').innerHTML = `
-                        <div class="content">Bem-vindo ao módulo Shopping!</div>
+                        <div class="dynamic-content">Bem-vindo ao módulo Compras!</div>
                     `;
                 },
                 configuracao: () => {
                     document.getElementById('dynamic-content').innerHTML = `
-                        <div class="content">Configurações disponíveis.</div>
+                        <div class="dynamic-content">Configurações disponíveis.</div>
                     `;
                 },
                 perfil: () => {
                     document.getElementById('dynamic-content').innerHTML = `
-                        <div class="content">Bem-vindo ao perfil do usuário!</div>
+                        <div class="dynamic-content">
+                            <h2>Perfil do Usuário</h2>
+                            <img src="https://via.placeholder.com/100" alt="Foto de Perfil" style="border-radius: 50%;">
+                            <p><strong>Nome:</strong> Usuário Exemplo</p>
+                            <p><strong>Status:</strong> Disponível</p>
+                        </div>
                     `;
                 }
             };
 
-            // Carrega o módulo correspondente ou exibe erro
+            // Carrega o módulo correspondente ou exibe uma mensagem de erro
             if (modules[moduleName]) {
                 modules[moduleName]();
             } else {
                 document.getElementById('dynamic-content').innerHTML = `
-                    <div class="content">Módulo não encontrado: ${moduleName}</div>
+                    <div class="dynamic-content">Módulo não encontrado: ${moduleName}.</div>
                 `;
             }
         }
