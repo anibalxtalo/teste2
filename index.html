@@ -184,12 +184,15 @@
                 `;
             },
             configuracao: () => {
-                document.getElementById('dynamic-content').innerHTML = `
-                    <div class="dynamic-content">Configurações disponíveis.</div>
-                `;
+                import('./modules/configuracoes.js')
+                    .then(module => {
+                        module.renderConfiguracoes();
+                    })
+                    .catch(err => {
+                        console.error('Erro ao carregar o módulo de configurações:', err);
+                    });
             },
             perfil: () => {
-                // Carregar dinamicamente o módulo de perfil
                 import('./modules/perfil.js')
                     .then(module => {
                         module.renderPerfil();
@@ -209,7 +212,7 @@
             `;
         }
     }
-</script>
+   </script>
 
 </body>
 </html>
