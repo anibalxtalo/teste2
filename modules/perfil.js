@@ -15,7 +15,6 @@ export function renderPerfil() {
             .custom-profile-image-container {
                 text-align: center;
                 margin-bottom: 20px;
-                position: relative;
             }
             .custom-profile-image {
                 width: 150px;
@@ -98,18 +97,6 @@ export function renderPerfil() {
             </div>
         </div>
     `;
-
-    // Configuração de eventos para o menu suspenso
-    const profileImg = document.getElementById('custom-profile-img');
-    const dropdownMenu = document.getElementById('custom-dropdown-menu');
-    profileImg.addEventListener('click', () => {
-        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-    });
-    document.addEventListener('click', (e) => {
-        if (!profileImg.contains(e.target) && !dropdownMenu.contains(e.target)) {
-            dropdownMenu.style.display = 'none';
-        }
-    });
 }
 
 // Funções Auxiliares
