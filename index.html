@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divs Modulares</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Adicione aqui o estilo dos seus componentes */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Div 1: Menu -->
+        <div class="div1">
+            <div class="button-group">
+                <button onclick="loadModule('perfil')"><span class="material-icons">person</span></button>
+                <button onclick="loadModule('robo')"><span class="material-icons">android</span></button>
+                <button onclick="loadModule('grupo')"><span class="material-icons">group</span></button>
+            </div>
+        </div>
+
+        <!-- Div 2: Conteúdo Dinâmico -->
+        <div class="div2" id="dynamic-content">
+            <div class="content">Selecione uma opção do menu à esquerda.</div>
+        </div>
+    </div>
+
+    <script src="modules/perfil.js"></script>
+    <script>
+        function loadModule(moduleName) {
+            const modules = {
+                perfil: renderPerfil,
+                robo: () => {
+                    document.getElementById('dynamic-content').innerHTML = `
+                        <div class="content">Módulo Robô carregado.</div>
+                    `;
+                },
+                grupo: () => {
+                    document.getElementById('dynamic-content').innerHTML = `
+                        <div class="content">Módulo Grupo carregado.</div>
+                    `;
+                },
+            };
+
+            if (modules[moduleName]) {
+                modules[moduleName]();
+            } else {
+                document.getElementById('dynamic-content').innerHTML = `
+                    <div class="content">Módulo não encontrado: ${moduleName}.</div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
