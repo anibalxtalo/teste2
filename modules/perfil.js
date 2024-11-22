@@ -27,3 +27,87 @@ export function renderPerfil() {
         </div>
     `;
 }
+
+// Exibe ou oculta o menu suspenso
+function toggleDropdown() {
+    const menu = document.getElementById('dropdown-menu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+// Mostra a foto do perfil em tela cheia
+function showPhoto() {
+    const imgSrc = document.getElementById('profile-img').src;
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`<img src="${imgSrc}" style="width:100%;height:100%;">`);
+}
+
+// Permite editar nome ou recado
+function editField(field) {
+    const currentValue = document.getElementById(field).innerText;
+    const newValue = prompt(`Edite ${field === "name" ? "seu nome" : "seu recado"}`, currentValue);
+    if (newValue) {
+        document.getElementById(field).innerText = newValue;
+    }
+}
+
+// Permite carregar uma foto do dispositivo
+function uploadPhoto() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const imgSrc = e.target.result;
+            document.getElementById('profile-img').src = imgSrc;
+        };
+        reader.readAsDataURL(file);
+    };
+    fileInput.click();
+}
+
+// Captura uma foto com a câmera do dispositivo
+function startCamera() {
+    const video = document.createElement('video');
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const snapshotDiv = document.createElement('div');
+
+    video.autoplay = true;
+    snapshotDiv.style.textAlign = 'center';
+
+    const takePhotoButton = document.createElement('button');
+    takePhotoButton.innerText = 'Tirar Foto';
+    takePhotoButton.onclick = () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imgSrc = canvas.toDataURL('image/png');
+        document.getElementById('profile-img').src = imgSrc;
+        stopCamera();
+    };
+
+    const stopCamera = () => {
+        video.srcObject.getTracks().forEach(track => track.stop());
+        document.body.removeChild(snapshotDiv);
+    };
+
+    snapshotDiv.appendChild(video);
+    snapshotDiv.appendChild(takePhotoButton);
+    document.body.appendChild(snapshotDiv);
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+            video.srcObject = stream;
+        })
+        .catch((error) => {
+            console.error('Erro ao acessar a câmera:', error);
+            document.body.removeChild(snapshotDiv);
+        });
+}
+
+// Remove a foto do perfil, substituindo por um placeholder
+function removePhoto() {
+    document.getElementById('profile-img').src = "https://via.placeholder.com/150";
+}
