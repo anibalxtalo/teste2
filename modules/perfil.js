@@ -1,113 +1,53 @@
 export function renderPerfil() {
     const contentDiv = document.getElementById('dynamic-content');
     contentDiv.innerHTML = `
-        <div class="profile-container">
-            <div class="profile-image" onclick="toggleDropdown()">
-                <img id="profile-img" src="https://via.placeholder.com/150" alt="Foto do Perfil">
-                <div class="edit-overlay">Mudar foto do perfil</div>
-            </div>
-            <div class="dropdown-menu" id="dropdown-menu">
-                <button onclick="showPhoto()">Mostrar foto</button>
-                <button onclick="startCamera()">Tirar foto</button>
-                <button onclick="uploadPhoto()">Carregar foto</button>
-                <button onclick="removePhoto()">Remover foto</button>
-            </div>
-            <div class="profile-info">
-                <div class="info-section">
-                    <span>Seu nome</span>
-                    <i class="material-icons" onclick="editField('name')">edit</i>
+        <div style="padding: 20px; font-family: Arial, sans-serif;">
+            <h2 style="font-size: 24px; font-weight: bold; color: #333;">Perfil</h2>
+            <div style="text-align: center; margin-top: 20px;">
+                <div style="position: relative; display: inline-block;">
+                    <img id="profile-img" src="https://via.placeholder.com/150" alt="Foto do Perfil"
+                        style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; 
+                                background: rgba(0,0,0,0.6); border-radius: 50%; align-items: center; justify-content: center; color: white; cursor: pointer;"
+                         id="edit-overlay" onclick="toggleDropdown()">
+                        <span style="font-size: 14px;">MUDAR FOTO DO PERFIL</span>
+                    </div>
                 </div>
-                <p id="name">Anibal Costa</p>
-                <div class="info-section">
-                    <span>Recado</span>
-                    <i class="material-icons" onclick="editField('status')">edit</i>
+                <div id="dropdown-menu" style="display: none; position: absolute; top: 180px; left: 50%; transform: translateX(-50%);
+                                               background: white; border: 1px solid #ddd; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                    <button onclick="showPhoto()" style="display: block; width: 100%; padding: 10px; border: none; background: none; text-align: left; cursor: pointer;">Mostrar foto</button>
+                    <button onclick="startCamera()" style="display: block; width: 100%; padding: 10px; border: none; background: none; text-align: left; cursor: pointer;">Tirar foto</button>
+                    <button onclick="uploadPhoto()" style="display: block; width: 100%; padding: 10px; border: none; background: none; text-align: left; cursor: pointer;">Carregar foto</button>
+                    <button onclick="removePhoto()" style="display: block; width: 100%; padding: 10px; border: none; background: none; text-align: left; cursor: pointer;">Remover foto</button>
                 </div>
-                <p id="status">Olá! Eu estou usando WhatsApp.</p>
+            </div>
+            <div style="margin-top: 20px; background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <div style="margin-bottom: 15px;">
+                    <p style="font-weight: bold; color: #4caf50;">Seu nome</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p id="name" style="margin: 0;">Anibal Costa</p>
+                        <i class="material-icons" onclick="editField('name')" style="cursor: pointer; color: #888;">edit</i>
+                    </div>
+                    <p style="font-size: 12px; color: #aaa;">Esse não é seu nome de usuário e nem seu PIN. Esse nome será exibido para seus contatos do WhatsApp.</p>
+                </div>
+                <div>
+                    <p style="font-weight: bold; color: #4caf50;">Recado</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p id="status" style="margin: 0;">Olá! Eu estou usando WhatsApp.</p>
+                        <i class="material-icons" onclick="editField('status')" style="cursor: pointer; color: #888;">edit</i>
+                    </div>
+                </div>
             </div>
         </div>
     `;
-}
 
-// Exibe ou oculta o menu suspenso
-function toggleDropdown() {
-    const menu = document.getElementById('dropdown-menu');
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-
-// Mostra a foto do perfil em tela cheia
-function showPhoto() {
-    const imgSrc = document.getElementById('profile-img').src;
-    const newWindow = window.open("", "_blank");
-    newWindow.document.write(`<img src="${imgSrc}" style="width:100%;height:100%;">`);
-}
-
-// Permite editar nome ou recado
-function editField(field) {
-    const currentValue = document.getElementById(field).innerText;
-    const newValue = prompt(`Edite ${field === "name" ? "seu nome" : "seu recado"}`, currentValue);
-    if (newValue) {
-        document.getElementById(field).innerText = newValue;
-    }
-}
-
-// Permite carregar uma foto do dispositivo
-function uploadPhoto() {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.onchange = (event) => {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const imgSrc = e.target.result;
-            document.getElementById('profile-img').src = imgSrc;
-        };
-        reader.readAsDataURL(file);
-    };
-    fileInput.click();
-}
-
-// Captura uma foto com a câmera do dispositivo
-function startCamera() {
-    const video = document.createElement('video');
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    const snapshotDiv = document.createElement('div');
-
-    video.autoplay = true;
-    snapshotDiv.style.textAlign = 'center';
-
-    const takePhotoButton = document.createElement('button');
-    takePhotoButton.innerText = 'Tirar Foto';
-    takePhotoButton.onclick = () => {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const imgSrc = canvas.toDataURL('image/png');
-        document.getElementById('profile-img').src = imgSrc;
-        stopCamera();
-    };
-
-    const stopCamera = () => {
-        video.srcObject.getTracks().forEach(track => track.stop());
-        document.body.removeChild(snapshotDiv);
-    };
-
-    snapshotDiv.appendChild(video);
-    snapshotDiv.appendChild(takePhotoButton);
-    document.body.appendChild(snapshotDiv);
-
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then((stream) => {
-            video.srcObject = stream;
-        })
-        .catch((error) => {
-            console.error('Erro ao acessar a câmera:', error);
-            document.body.removeChild(snapshotDiv);
-        });
-}
-
-// Remove a foto do perfil, substituindo por um placeholder
-function removePhoto() {
-    document.getElementById('profile-img').src = "https://via.placeholder.com/150";
+    // Configuração de eventos para mostrar a sobreposição ao passar o mouse na imagem
+    const profileImg = document.querySelector('.profile-image');
+    const editOverlay = document.getElementById('edit-overlay');
+    profileImg.addEventListener('mouseenter', () => {
+        editOverlay.style.display = 'flex';
+    });
+    profileImg.addEventListener('mouseleave', () => {
+        editOverlay.style.display = 'none';
+    });
 }
