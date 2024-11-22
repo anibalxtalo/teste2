@@ -89,13 +89,13 @@ export function renderPerfil() {
         </style>
 
         <div class="profile-container">
-            <div class="profile-image-container" onclick="toggleDropdown()">
+            <div class="profile-image-container" onclick="customToggleDropdown()">
                 <img id="profile-img" src="https://via.placeholder.com/150" alt="Foto do Perfil">
                 <div id="dropdown-menu" class="dropdown-menu">
-                    <button onclick="showPhoto()">Mostrar foto</button>
-                    <button onclick="startCamera()">Tirar foto</button>
-                    <button onclick="uploadPhoto()">Carregar foto</button>
-                    <button onclick="removePhoto()">Remover foto</button>
+                    <button onclick="customShowPhoto()">Mostrar foto</button>
+                    <button onclick="customStartCamera()">Tirar foto</button>
+                    <button onclick="customUploadPhoto()">Carregar foto</button>
+                    <button onclick="customRemovePhoto()">Remover foto</button>
                 </div>
             </div>
             <div class="profile-info">
@@ -103,14 +103,14 @@ export function renderPerfil() {
                     <span>Seu nome</span>
                     <div style="display: flex; gap: 10px;">
                         <p id="name">Anibal Costa</p>
-                        <i class="material-icons edit-icon" onclick="editField('name')">edit</i>
+                        <i class="material-icons edit-icon" onclick="customEditField('name')">edit</i>
                     </div>
                 </div>
                 <div class="info-section">
                     <span>Recado</span>
                     <div style="display: flex; gap: 10px;">
                         <p id="status">Olá! Eu estou usando WhatsApp.</p>
-                        <i class="material-icons edit-icon" onclick="editField('status')">edit</i>
+                        <i class="material-icons edit-icon" onclick="customEditField('status')">edit</i>
                     </div>
                 </div>
             </div>
@@ -120,37 +120,27 @@ export function renderPerfil() {
     setupDropdown();
 }
 
-// Funções Auxiliares
-function setupDropdown() {
-    const profileImg = document.getElementById('profile-img');
-    const dropdownMenu = document.getElementById('dropdown-menu');
+// Funções Auxiliares (adicionadas ao escopo global)
+window.customToggleDropdown = function() {
+    const menu = document.getElementById('dropdown-menu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+};
 
-    profileImg.addEventListener('click', () => {
-        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!profileImg.contains(e.target) && !dropdownMenu.contains(e.target)) {
-            dropdownMenu.style.display = 'none';
-        }
-    });
-}
-
-function showPhoto() {
+window.customShowPhoto = function() {
     const imgSrc = document.getElementById('profile-img').src;
     const newWindow = window.open("", "_blank");
     newWindow.document.write(`<img src="${imgSrc}" style="width:100%;height:100%;">`);
-}
+};
 
-function editField(fieldId) {
+window.customEditField = function(fieldId) {
     const currentValue = document.getElementById(fieldId).innerText;
     const newValue = prompt(`Edite o campo`, currentValue);
     if (newValue) {
         document.getElementById(fieldId).innerText = newValue;
     }
-}
+};
 
-function uploadPhoto() {
+window.customUploadPhoto = function() {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
@@ -163,13 +153,13 @@ function uploadPhoto() {
         reader.readAsDataURL(file);
     };
     fileInput.click();
-}
+};
 
-function removePhoto() {
+window.customRemovePhoto = function() {
     document.getElementById('profile-img').src = "https://via.placeholder.com/150";
-}
+};
 
-function startCamera() {
+window.customStartCamera = function() {
     const video = document.createElement('video');
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -206,4 +196,4 @@ function startCamera() {
             console.error('Erro ao acessar a câmera:', error);
             document.body.removeChild(snapshotDiv);
         });
-}
+};
