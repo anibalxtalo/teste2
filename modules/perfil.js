@@ -2,29 +2,31 @@ export function renderPerfil() {
     const contentDiv = document.getElementById('dynamic-content');
     contentDiv.innerHTML = `
         <style>
-            .profile-container {
+            .custom-profile-container {
                 padding: 20px;
                 font-family: Arial, sans-serif;
                 color: #333;
             }
-            .profile-container h2 {
+            .custom-profile-header {
                 font-size: 24px;
                 font-weight: bold;
                 margin-bottom: 20px;
             }
-            .profile-image-container {
+            .custom-profile-image-container {
                 text-align: center;
                 margin-bottom: 20px;
+                position: relative;
             }
-            .profile-image-container img {
+            .custom-profile-image {
                 width: 150px;
                 height: 150px;
                 border-radius: 50%;
                 object-fit: cover;
                 border: 3px solid #ddd;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                cursor: pointer;
             }
-            .profile-image-container .edit-overlay {
+            .custom-profile-edit-overlay {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -40,10 +42,10 @@ export function renderPerfil() {
                 align-items: center;
                 cursor: pointer;
             }
-            .profile-image-container:hover .edit-overlay {
+            .custom-profile-image-container:hover .custom-profile-edit-overlay {
                 display: flex;
             }
-            .dropdown-menu {
+            .custom-profile-dropdown {
                 display: none;
                 position: absolute;
                 margin-top: 10px;
@@ -55,7 +57,7 @@ export function renderPerfil() {
                 text-align: left;
                 z-index: 1000;
             }
-            .dropdown-menu button {
+            .custom-profile-dropdown button {
                 display: block;
                 padding: 10px;
                 width: 100%;
@@ -65,52 +67,52 @@ export function renderPerfil() {
                 cursor: pointer;
                 font-size: 14px;
             }
-            .dropdown-menu button:hover {
+            .custom-profile-dropdown button:hover {
                 background-color: #f4f4f4;
             }
-            .profile-info {
+            .custom-profile-info {
                 margin-top: 30px;
                 background: #f9f9f9;
                 padding: 20px;
                 border-radius: 8px;
             }
-            .info-section {
+            .custom-profile-info-section {
                 margin-bottom: 20px;
             }
-            .info-section p {
+            .custom-profile-info-section p {
                 margin: 0;
             }
-            .info-section .edit-icon {
+            .custom-profile-info-section .custom-edit-icon {
                 cursor: pointer;
                 color: #888;
             }
         </style>
-        <div class="profile-container">
-            <h2>Perfil</h2>
-            <div class="profile-image-container">
-                <img id="profile-img" src="https://via.placeholder.com/150" alt="Foto do Perfil">
-                <div class="edit-overlay" onclick="toggleDropdown()">MUDAR FOTO DO PERFIL</div>
-                <div class="dropdown-menu" id="dropdown-menu">
-                    <button onclick="showPhoto()">Mostrar foto</button>
-                    <button onclick="startCamera()">Tirar foto</button>
-                    <button onclick="uploadPhoto()">Carregar foto</button>
-                    <button onclick="removePhoto()">Remover foto</button>
+        <div class="custom-profile-container">
+            <h2 class="custom-profile-header">Perfil</h2>
+            <div class="custom-profile-image-container">
+                <img id="custom-profile-img" src="https://via.placeholder.com/150" alt="Foto do Perfil" class="custom-profile-image">
+                <div class="custom-profile-edit-overlay" onclick="customToggleDropdown()">MUDAR FOTO DO PERFIL</div>
+                <div id="custom-dropdown-menu" class="custom-profile-dropdown">
+                    <button onclick="customShowPhoto()">Mostrar foto</button>
+                    <button onclick="customStartCamera()">Tirar foto</button>
+                    <button onclick="customUploadPhoto()">Carregar foto</button>
+                    <button onclick="customRemovePhoto()">Remover foto</button>
                 </div>
             </div>
-            <div class="profile-info">
-                <div class="info-section">
+            <div class="custom-profile-info">
+                <div class="custom-profile-info-section">
                     <p style="font-weight: bold; color: #4CAF50;">Seu nome</p>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p id="name" style="margin: 0; font-size: 16px;">Anibal Costa</p>
-                        <i class="material-icons edit-icon" onclick="editField('name')">edit</i>
+                        <p id="custom-name" style="margin: 0; font-size: 16px;">Anibal Costa</p>
+                        <i class="material-icons custom-edit-icon" onclick="customEditField('custom-name')">edit</i>
                     </div>
                     <p style="font-size: 12px; color: #aaa; margin-top: 5px;">Esse não é seu nome de usuário e nem seu PIN. Esse nome será exibido para seus contatos do WhatsApp.</p>
                 </div>
-                <div class="info-section">
+                <div class="custom-profile-info-section">
                     <p style="font-weight: bold; color: #4CAF50;">Recado</p>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p id="status" style="margin: 0; font-size: 16px;">Olá! Eu estou usando WhatsApp.</p>
-                        <i class="material-icons edit-icon" onclick="editField('status')">edit</i>
+                        <p id="custom-status" style="margin: 0; font-size: 16px;">Olá! Eu estou usando WhatsApp.</p>
+                        <i class="material-icons custom-edit-icon" onclick="customEditField('custom-status')">edit</i>
                     </div>
                 </div>
             </div>
@@ -118,8 +120,8 @@ export function renderPerfil() {
     `;
 
     // Configuração de eventos para o menu suspenso
-    const profileImg = document.getElementById('profile-img');
-    const dropdownMenu = document.getElementById('dropdown-menu');
+    const profileImg = document.getElementById('custom-profile-img');
+    const dropdownMenu = document.getElementById('custom-dropdown-menu');
     profileImg.addEventListener('click', () => {
         dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
     });
@@ -128,4 +130,43 @@ export function renderPerfil() {
             dropdownMenu.style.display = 'none';
         }
     });
+}
+
+// Funções Auxiliares
+function customToggleDropdown() {
+    const dropdown = document.getElementById('custom-dropdown-menu');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+function customShowPhoto() {
+    const imgSrc = document.getElementById('custom-profile-img').src;
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`<img src="${imgSrc}" style="width:100%;height:100%;">`);
+}
+
+function customEditField(fieldId) {
+    const currentValue = document.getElementById(fieldId).innerText;
+    const newValue = prompt(`Edite o campo`, currentValue);
+    if (newValue) {
+        document.getElementById(fieldId).innerText = newValue;
+    }
+}
+
+function customUploadPhoto() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById('custom-profile-img').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+    fileInput.click();
+}
+
+function customRemovePhoto() {
+    document.getElementById('custom-profile-img').src = "https://via.placeholder.com/150";
 }
