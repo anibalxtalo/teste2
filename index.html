@@ -155,60 +155,61 @@
         </div>
     </div>
 
-    <script>
-        function loadModule(moduleName) {
-            const modules = {
-                robo: () => {
-                    document.getElementById('dynamic-content').innerHTML = `
-                        <div class="dynamic-content">Bem-vindo ao módulo Robô!</div>
-                    `;
-                },
-                humano: () => {
-                    document.getElementById('dynamic-content').innerHTML = `
-                        <div class="dynamic-content">Bem-vindo ao módulo Humano!</div>
-                    `;
-                },
-                grupo: () => {
-                    document.getElementById('dynamic-content').innerHTML = `
-                        <div class="dynamic-content">Bem-vindo ao módulo Grupo!</div>
-                    `;
-                },
-                entrega: () => {
-                    document.getElementById('dynamic-content').innerHTML = `
-                        <div class="dynamic-content">Bem-vindo ao módulo Entrega!</div>
-                    `;
-                },
-                shopping: () => {
-                    document.getElementById('dynamic-content').innerHTML = `
-                        <div class="dynamic-content">Bem-vindo ao módulo Compras!</div>
-                    `;
-                },
-                configuracao: () => {
-                    document.getElementById('dynamic-content').innerHTML = `
-                        <div class="dynamic-content">Configurações disponíveis.</div>
-                    `;
-                },
-                perfil: () => {
-                    document.getElementById('dynamic-content').innerHTML = `
-                        <div class="dynamic-content">
-                            <h2>Perfil do Usuário</h2>
-                            <img src="https://via.placeholder.com/100" alt="Foto de Perfil" style="border-radius: 50%;">
-                            <p><strong>Nome:</strong> Usuário Exemplo</p>
-                            <p><strong>Status:</strong> Disponível</p>
-                        </div>
-                    `;
-                }
-            };
-
-            // Carrega o módulo correspondente ou exibe uma mensagem de erro
-            if (modules[moduleName]) {
-                modules[moduleName]();
-            } else {
+   <script>
+    function loadModule(moduleName) {
+        const modules = {
+            robo: () => {
                 document.getElementById('dynamic-content').innerHTML = `
-                    <div class="dynamic-content">Módulo não encontrado: ${moduleName}.</div>
+                    <div class="dynamic-content">Bem-vindo ao módulo Robô!</div>
                 `;
+            },
+            humano: () => {
+                document.getElementById('dynamic-content').innerHTML = `
+                    <div class="dynamic-content">Bem-vindo ao módulo Humano!</div>
+                `;
+            },
+            grupo: () => {
+                document.getElementById('dynamic-content').innerHTML = `
+                    <div class="dynamic-content">Bem-vindo ao módulo Grupo!</div>
+                `;
+            },
+            entrega: () => {
+                document.getElementById('dynamic-content').innerHTML = `
+                    <div class="dynamic-content">Bem-vindo ao módulo Entrega!</div>
+                `;
+            },
+            shopping: () => {
+                document.getElementById('dynamic-content').innerHTML = `
+                    <div class="dynamic-content">Bem-vindo ao módulo Compras!</div>
+                `;
+            },
+            configuracao: () => {
+                document.getElementById('dynamic-content').innerHTML = `
+                    <div class="dynamic-content">Configurações disponíveis.</div>
+                `;
+            },
+            perfil: () => {
+                // Carregar dinamicamente o módulo de perfil
+                import('./modules/perfil.js')
+                    .then(module => {
+                        module.renderPerfil();
+                    })
+                    .catch(err => {
+                        console.error('Erro ao carregar o módulo de perfil:', err);
+                    });
             }
+        };
+
+        // Carregar o módulo correspondente ou exibir uma mensagem de erro
+        if (modules[moduleName]) {
+            modules[moduleName]();
+        } else {
+            document.getElementById('dynamic-content').innerHTML = `
+                <div class="dynamic-content">Módulo não encontrado: ${moduleName}.</div>
+            `;
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
