@@ -24,7 +24,7 @@
         }
 
         .sidebar {
-            width: 8.33%; /* 1/12 */
+            width: 8.33%;
             background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
@@ -91,7 +91,7 @@
         }
 
         .content {
-            width: 33.33%; /* 4/12 */
+            width: 33.33%;
             background-color: #ffffff;
             padding: 20px;
             overflow-y: auto;
@@ -101,7 +101,7 @@
         }
 
         .placeholder {
-            width: 58.33%; /* 7/12 */
+            width: 58.33%;
             background-color: #e8e8e8;
             display: flex;
             justify-content: center;
@@ -117,7 +117,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="top-buttons">
                 <button onclick="loadModule('robo')" aria-label="Robô">
@@ -147,12 +146,10 @@
             </div>
         </div>
 
-        <!-- Dynamic Content -->
         <div class="content" id="dynamic-content">
             <div class="dynamic-content">Selecione uma opção do menu à esquerda.</div>
         </div>
 
-        <!-- Placeholder -->
         <div class="placeholder">
             <div class="dynamic-content">Área reservada para futuros conteúdos.</div>
         </div>
@@ -190,20 +187,37 @@
                     `;
                 },
                 configuracao: async () => {
-                    const module = await import('./modules/configuracoes.js');
-                    module.renderConfiguracoes();
+                    try {
+                        const module = await import('./modules/configuracoes.js');
+                        module.renderConfiguracoes();
+                    } catch (err) {
+                        document.getElementById('dynamic-content').innerHTML = `
+                            <div class="dynamic-content">Erro ao carregar o módulo Configuração.</div>
+                        `;
+                    }
                 },
                 perfil: async () => {
-                    const module = await import('./modules/perfil.js');
-                    module.renderPerfil();
+                    try {
+                        const module = await import('./modules/perfil.js');
+                        module.renderPerfil();
+                    } catch (err) {
+                        document.getElementById('dynamic-content').innerHTML = `
+                            <div class="dynamic-content">Erro ao carregar o módulo Perfil.</div>
+                        `;
+                    }
                 },
                 cards: async () => {
-                    const module = await import('./modules/renderCards.js');
-                    module.renderCards();
+                    try {
+                        const module = await import('./modules/renderCards.js');
+                        module.renderCards();
+                    } catch (err) {
+                        document.getElementById('dynamic-content').innerHTML = `
+                            <div class="dynamic-content">Erro ao carregar o módulo Cards.</div>
+                        `;
+                    }
                 }
             };
 
-            // Carregar o módulo correspondente ou exibir uma mensagem de erro
             if (modules[moduleName]) {
                 modules[moduleName]();
             } else {
