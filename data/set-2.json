@@ -1,0 +1,6 @@
+{
+    "cards": [
+        { "title": "Card 1", "icon": "person_outline" },
+        { "title": "Card 2", "icon": "edit" }
+    ]
+}
