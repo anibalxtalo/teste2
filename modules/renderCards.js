@@ -1,5 +1,3 @@
-import gsap from "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
-
 export function renderCards() {
     const contentDiv = document.getElementById('dynamic-content');
 
@@ -77,7 +75,7 @@ function setupNavigation(contentDiv) {
 
         contentDiv.appendChild(newGroup);
 
-        // Anima o movimento dos grupos
+        // Anima o movimento dos grupos usando GSAP
         gsap.fromTo(currentGroup, { x: 0 }, { x: '-100%', duration: 0.7, ease: 'power2.inOut' });
         gsap.fromTo(newGroup, { x: '100%' }, { x: 0, duration: 0.7, ease: 'power2.inOut', onComplete: () => {
             currentGroup.remove(); // Remove o grupo antigo após a animação
@@ -98,7 +96,7 @@ function setupNavigation(contentDiv) {
 
         contentDiv.appendChild(previousGroup);
 
-        // Anima o movimento dos grupos
+        // Anima o movimento dos grupos usando GSAP
         gsap.fromTo(currentGroup, { x: 0 }, { x: '100%', duration: 0.7, ease: 'power2.inOut', onComplete: () => {
             currentGroup.remove(); // Remove a página atual após a animação
         } });
