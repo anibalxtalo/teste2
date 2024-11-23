@@ -1,97 +1,31 @@
-export function renderConfiguracoes() {
-    const contentDiv = document.getElementById('dynamic-content');
-    contentDiv.innerHTML = `
-        <style>
-            .config-container {
-                width: 100%;
-                max-width: 600px;
-                margin: auto;
-                overflow: hidden;
-                position: relative;
-            }
-
-            .card-wrapper {
-                display: flex;
-                transition: transform 0.3s ease-in-out;
-            }
-
-            .card-set {
-                flex: 0 0 100%;
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 10px;
-                padding: 20px;
-                align-content: flex-start; /* Alinha os cards ao topo */
-            }
-
-            .card {
-                background-color: #f4f4f4;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 20px;
-                display: flex;
-                align-items: flex-start; /* Alinha o conteúdo do card ao topo */
-                gap: 15px;
-                cursor: pointer;
-                transition: background-color 0.3s, transform 0.2s;
-            }
-
-            .card:hover {
-                background-color: #e0f7fa;
-                transform: scale(1.02);
-            }
-
-            .icon {
-                font-size: 28px;
-                color: #00796b;
-            }
-
-            .card-title {
-                font-size: 20px;
-                color: #333;
-            }
-
-            .back-button {
-                cursor: pointer;
-                font-size: 18px;
-                color: #00796b;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                margin-bottom: 15px;
-            }
-
-            .back-button:hover {
-                text-decoration: underline;
-            }
-        </style>
-
-        <div class="config-container">
-            <div class="card-wrapper" id="card-wrapper">
-                <!-- Inicialmente vazio, preenchido dinamicamente -->
-            </div>
-        </div>
-    `;
-
-    loadSet(1); // Carregar o primeiro conjunto de cards inicialmente
-}
-
 function loadSet(setNumber) {
     const wrapper = document.getElementById('card-wrapper');
-    const path = `../data/set-${setNumber}.json`; // Caminho ajustado para a pasta data
 
-    console.log(`Tentando carregar o JSON do caminho: ${path}`); // Log do caminho
+    // Verificação inicial do número do conjunto
+    if (typeof setNumber !== 'number' || setNumber <= 0) {
+        console.error(`Número inválido para o conjunto: ${setNumber}`);
+        return;
+    }
+
+    const path = `../data/set-${setNumber}.json`; // Caminho relativo para o JSON
+
+    console.log(`Tentando carregar o JSON do caminho: ${path}`); // Log do caminho usado no fetch
 
     fetch(path)
         .then(response => {
-            console.log(`Status da resposta: ${response.status}`); // Log do status
+            console.log(`Status da resposta para set-${setNumber}: ${response.status}`);
             if (!response.ok) {
                 throw new Error(`Erro ao carregar o conjunto ${setNumber}: ${response.status} ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
-            console.log(`Dados carregados para o conjunto ${setNumber}:`, data); // Log dos dados carregados
+            console.log(`Dados carregados para o conjunto ${setNumber}:`, data);
+
+            // Validação dos dados retornados
+            if (!data.cards || !Array.isArray(data.cards)) {
+                throw new Error(`Estrutura inválida no JSON do conjunto ${setNumber}`);
+            }
 
             // Criar o HTML dos cards
             const cardSet = document.createElement('div');
@@ -110,6 +44,11 @@ function loadSet(setNumber) {
 
             // Adiciona os cards
             data.cards.forEach(card => {
+                if (!card.title || !card.icon) {
+                    console.warn(`Card inválido encontrado no conjunto ${setNumber}:`, card);
+                    return;
+                }
+
                 const cardDiv = document.createElement('div');
                 cardDiv.classList.add('card');
                 cardDiv.innerHTML = `
@@ -125,7 +64,13 @@ function loadSet(setNumber) {
             wrapper.appendChild(cardSet);
         })
         .catch(error => {
-            console.error(`Erro capturado no carregamento do conjunto ${setNumber}:`, error); // Log do erro detalhado
+            console.error(`Erro capturado no carregamento do conjunto ${setNumber}:`, error);
+            // Mensagem para o usuário final
+            const errorDiv = document.createElement('div');
+            errorDiv.classList.add('error-message');
+            errorDiv.style.color = 'red';
+            errorDiv.innerHTML = `Não foi possível carregar o conjunto ${setNumber}. Tente novamente mais tarde.`;
+            wrapper.appendChild(errorDiv);
         });
 }
 
@@ -133,6 +78,11 @@ let currentSet = 0;
 
 // Exibe o próximo conjunto de cards
 function showNextSet(setNumber) {
+    if (typeof setNumber !== 'number' || setNumber <= 0) {
+        console.error(`Número inválido para o próximo conjunto: ${setNumber}`);
+        return;
+    }
+
     currentSet = setNumber - 1; // Ajustar para índice zero
     const wrapper = document.getElementById('card-wrapper');
 
