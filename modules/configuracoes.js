@@ -68,72 +68,83 @@ export function renderConfiguracoes() {
 
         <div class="config-container">
             <div class="card-wrapper" id="card-wrapper">
-                <!-- Primeiro conjunto de cards -->
-                <div class="card-set" id="set-1">
-                    <div class="card" onclick="showNextSet(2)">
-                        <span class="icon material-icons">person</span>
-                        <span class="card-title">Primeiro Card</span>
-                    </div>
-                    <div class="card" onclick="showNextSet(3)">
-                        <span class="icon material-icons">lock</span>
-                        <span class="card-title">Segundo Card</span>
-                    </div>
-                </div>
-
-                <!-- Segundo conjunto de cards -->
-                <div class="card-set" id="set-2">
-                    <div class="back-button" onclick="showPreviousSet()">
-                        <span class="material-icons">arrow_back</span> Voltar
-                    </div>
-                    <div class="card">
-                        <span class="icon material-icons">person_outline</span>
-                        <span class="card-title">Card 1</span>
-                    </div>
-                    <div class="card">
-                        <span class="icon material-icons">edit</span>
-                        <span class="card-title">Card 2</span>
-                    </div>
-                </div>
-
-                <!-- Terceiro conjunto de cards -->
-                <div class="card-set" id="set-3">
-                    <div class="back-button" onclick="showPreviousSet()">
-                        <span class="material-icons">arrow_back</span> Voltar
-                    </div>
-                    <div class="card">
-                        <span class="icon material-icons">group</span>
-                        <span class="card-title">Card 1</span>
-                    </div>
-                    <div class="card">
-                        <span class="icon material-icons">chat</span>
-                        <span class="card-title">Card 2</span>
-                    </div>
-                    <div class="card">
-                        <span class="icon material-icons">help</span>
-                        <span class="card-title">Card 3</span>
-                    </div>
-                </div>
+                <!-- Inicialmente vazio, preenchido dinamicamente -->
             </div>
         </div>
     `;
 
-    setupNavigation();
+    loadSet(1); // Carregar o primeiro conjunto de cards inicialmente
 }
 
-function setupNavigation() {
-    let currentSet = 0;
+function loadSet(setNumber) {
+    const wrapper = document.getElementById('card-wrapper');
 
-    // Exibe o próximo conjunto de cards
-    window.showNextSet = function (setNumber) {
-        const wrapper = document.getElementById('card-wrapper');
-        currentSet = setNumber - 1; // Ajustar para índice zero
-        wrapper.style.transform = `translateX(-${currentSet * 100}%)`;
-    };
+    // Requisição AJAX para carregar o conjunto de cards
+    fetch(`set-${setNumber}.json`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro ao carregar o conjunto ${setNumber}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Criar o HTML dos cards
+            const cardSet = document.createElement('div');
+            cardSet.classList.add('card-set');
 
-    // Volta ao conjunto anterior
-    window.showPreviousSet = function () {
-        const wrapper = document.getElementById('card-wrapper');
-        currentSet = Math.max(0, currentSet - 1);
+            if (setNumber > 1) {
+                // Adiciona botão de "Voltar"
+                const backButton = document.createElement('div');
+                backButton.classList.add('back-button');
+                backButton.innerHTML = `
+                    <span class="material-icons">arrow_back</span> Voltar
+                `;
+                backButton.addEventListener('click', () => showPreviousSet());
+                cardSet.appendChild(backButton);
+            }
+
+            // Adiciona os cards
+            data.cards.forEach(card => {
+                const cardDiv = document.createElement('div');
+                cardDiv.classList.add('card');
+                cardDiv.innerHTML = `
+                    <span class="icon material-icons">${card.icon}</span>
+                    <span class="card-title">${card.title}</span>
+                `;
+                if (card.nextSet) {
+                    cardDiv.addEventListener('click', () => showNextSet(card.nextSet));
+                }
+                cardSet.appendChild(cardDiv);
+            });
+
+            wrapper.appendChild(cardSet);
+        })
+        .catch(error => {
+            console.error(`Erro ao carregar o conjunto ${setNumber}:`, error);
+        });
+}
+
+let currentSet = 0;
+
+// Exibe o próximo conjunto de cards
+function showNextSet(setNumber) {
+    currentSet = setNumber - 1; // Ajustar para índice zero
+    const wrapper = document.getElementById('card-wrapper');
+
+    // Verifica se o conjunto já foi carregado
+    if (wrapper.children[currentSet]) {
         wrapper.style.transform = `translateX(-${currentSet * 100}%)`;
-    };
+    } else {
+        loadSet(setNumber); // Carrega o novo conjunto
+        setTimeout(() => {
+            wrapper.style.transform = `translateX(-${currentSet * 100}%)`;
+        }, 300); // Garante que o conteúdo seja carregado antes de animar
+    }
+}
+
+// Volta ao conjunto anterior
+function showPreviousSet() {
+    const wrapper = document.getElementById('card-wrapper');
+    currentSet = Math.max(0, currentSet - 1);
+    wrapper.style.transform = `translateX(-${currentSet * 100}%)`;
 }
