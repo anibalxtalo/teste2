@@ -1,0 +1,6 @@
+{
+    "cards": [
+        { "title": "Primeiro Card", "icon": "person", "nextSet": 2 },
+        { "title": "Segundo Card", "icon": "lock", "nextSet": 3 }
+    ]
+}
