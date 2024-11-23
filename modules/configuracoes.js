@@ -17,32 +17,36 @@ export function renderConfiguracoes() {
     const style = document.createElement('style');
     style.textContent = `
         .card-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+    display: flex;
+    flex-direction: column; /* Coloca os cards empilhados verticalmente */
+    align-items: center;
+    gap: 20px; /* Espaçamento entre os cards */
+    width: 100%; /* Faz os cards ocuparem toda a largura disponível */
+}
+.card-container {
+    display: flex;
+    flex-direction: column; /* Coloca os cards empilhados verticalmente */
+    align-items: center;
+    gap: 20px; /* Espaçamento entre os cards */
+    width: 100%; /* Faz os cards ocuparem toda a largura disponível */
+}
 
-        .card {
-            width: 95%;
-            height: 70px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-
+.card {
+    width: 90%; /* Ocupa 90% da largura do contêiner pai */
+    max-width: 500px; /* Limita a largura máxima */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Permite que a altura seja determinada pelo conteúdo */
+    cursor: pointer;
+}
         .card-1 {
             height: 70px;
         }
