@@ -78,16 +78,21 @@ export function renderConfiguracoes() {
 
 function loadSet(setNumber) {
     const wrapper = document.getElementById('card-wrapper');
+    const path = `../data/set-${setNumber}.json`; // Caminho ajustado para a pasta data
 
-    // Requisição AJAX para carregar o conjunto de cards
-    fetch(`../data/set-${setNumber}.json`)
+    console.log(`Tentando carregar o JSON do caminho: ${path}`); // Log do caminho
+
+    fetch(path)
         .then(response => {
+            console.log(`Status da resposta: ${response.status}`); // Log do status
             if (!response.ok) {
-                throw new Error(`Erro ao carregar o conjunto ${setNumber}`);
+                throw new Error(`Erro ao carregar o conjunto ${setNumber}: ${response.status} ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
+            console.log(`Dados carregados para o conjunto ${setNumber}:`, data); // Log dos dados carregados
+
             // Criar o HTML dos cards
             const cardSet = document.createElement('div');
             cardSet.classList.add('card-set');
@@ -120,7 +125,7 @@ function loadSet(setNumber) {
             wrapper.appendChild(cardSet);
         })
         .catch(error => {
-            console.error(`Erro ao carregar o conjunto ${setNumber}:`, error);
+            console.error(`Erro capturado no carregamento do conjunto ${setNumber}:`, error); // Log do erro detalhado
         });
 }
 
@@ -130,6 +135,8 @@ let currentSet = 0;
 function showNextSet(setNumber) {
     currentSet = setNumber - 1; // Ajustar para índice zero
     const wrapper = document.getElementById('card-wrapper');
+
+    console.log(`Navegando para o conjunto ${setNumber}`); // Log da navegação
 
     // Verifica se o conjunto já foi carregado
     if (wrapper.children[currentSet]) {
@@ -146,5 +153,8 @@ function showNextSet(setNumber) {
 function showPreviousSet() {
     const wrapper = document.getElementById('card-wrapper');
     currentSet = Math.max(0, currentSet - 1);
+
+    console.log(`Voltando para o conjunto ${currentSet + 1}`); // Log da navegação para o conjunto anterior
+
     wrapper.style.transform = `translateX(-${currentSet * 100}%)`;
 }
