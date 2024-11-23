@@ -32,8 +32,9 @@ export function renderConfiguracoes() {
 }
 
 .card {
-    width: 90%; /* Ocupa 90% da largura do contêiner pai */
-    max-width: 500px; /* Limita a largura máxima */
+    width: calc(100% - 20px); /* A largura será 100% da div menos margens */
+    max-width: 500px; /* Define uma largura máxima */
+    margin: 0 auto; /* Centraliza os cartões horizontalmente */
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -44,7 +45,7 @@ export function renderConfiguracoes() {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: auto; /* Permite que a altura seja determinada pelo conteúdo */
+    height: auto;
     cursor: pointer;
 }
         .card-1 {
