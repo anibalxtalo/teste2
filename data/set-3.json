@@ -1,0 +1,7 @@
+{
+    "cards": [
+        { "title": "Card 1", "icon": "group" },
+        { "title": "Card 2", "icon": "chat" },
+        { "title": "Card 3", "icon": "help" }
+    ]
+}
