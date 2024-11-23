@@ -209,7 +209,7 @@
                 cards: async () => {
                     try {
                         const module = await import('./modules/renderCards.js');
-                        module.renderCards();
+                        module.renderDynamicCards(); // Atualizado para chamar renderDynamicCards()
                     } catch (err) {
                         document.getElementById('dynamic-content').innerHTML = `
                             <div class="dynamic-content">Erro ao carregar o módulo Cards.</div>
