@@ -21,15 +21,16 @@ export function renderConfiguracoes() {
                 grid-template-columns: 1fr;
                 gap: 10px;
                 padding: 20px;
+                align-content: flex-start; /* Alinha os cards ao topo */
             }
 
             .card {
                 background-color: #f4f4f4;
                 border: 1px solid #ddd;
                 border-radius: 8px;
-                padding: 15px;
+                padding: 20px;
                 display: flex;
-                align-items: center;
+                align-items: flex-start; /* Alinha o conteúdo do card ao topo */
                 gap: 15px;
                 cursor: pointer;
                 transition: background-color 0.3s, transform 0.2s;
@@ -41,12 +42,12 @@ export function renderConfiguracoes() {
             }
 
             .icon {
-                font-size: 24px;
+                font-size: 28px;
                 color: #00796b;
             }
 
             .card-title {
-                font-size: 18px;
+                font-size: 20px;
                 color: #333;
             }
 
@@ -71,15 +72,11 @@ export function renderConfiguracoes() {
                 <div class="card-set" id="set-1">
                     <div class="card" onclick="showNextSet(2)">
                         <span class="icon material-icons">person</span>
-                        <span class="card-title">Conta</span>
+                        <span class="card-title">Primeiro Card</span>
                     </div>
                     <div class="card" onclick="showNextSet(3)">
                         <span class="icon material-icons">lock</span>
-                        <span class="card-title">Privacidade</span>
-                    </div>
-                    <div class="card" onclick="showNextSet(4)">
-                        <span class="icon material-icons">chat</span>
-                        <span class="card-title">Conversas</span>
+                        <span class="card-title">Segundo Card</span>
                     </div>
                 </div>
 
@@ -90,11 +87,11 @@ export function renderConfiguracoes() {
                     </div>
                     <div class="card">
                         <span class="icon material-icons">person_outline</span>
-                        <span class="card-title">Editar Perfil</span>
+                        <span class="card-title">Card 1</span>
                     </div>
                     <div class="card">
-                        <span class="icon material-icons">delete</span>
-                        <span class="card-title">Deletar Conta</span>
+                        <span class="icon material-icons">edit</span>
+                        <span class="card-title">Card 2</span>
                     </div>
                 </div>
 
@@ -104,12 +101,16 @@ export function renderConfiguracoes() {
                         <span class="material-icons">arrow_back</span> Voltar
                     </div>
                     <div class="card">
-                        <span class="icon material-icons">visibility</span>
-                        <span class="card-title">Gerenciar Bloqueios</span>
+                        <span class="icon material-icons">group</span>
+                        <span class="card-title">Card 1</span>
                     </div>
                     <div class="card">
-                        <span class="icon material-icons">vpn_key</span>
-                        <span class="card-title">Alterar Senha</span>
+                        <span class="icon material-icons">chat</span>
+                        <span class="card-title">Card 2</span>
+                    </div>
+                    <div class="card">
+                        <span class="icon material-icons">help</span>
+                        <span class="card-title">Card 3</span>
                     </div>
                 </div>
             </div>
