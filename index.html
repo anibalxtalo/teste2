@@ -184,10 +184,15 @@
                 `;
             },
             configuracao: () => {
-                document.getElementById('dynamic-content').innerHTML = `
-                    <div class="dynamic-content">Configurações disponíveis.</div>
-                `;
-            },
+                // Carregar dinamicamente o módulo de configuracoes
+                import('./modules/configuracoes.js')
+                    .then(module => {
+                        module.renderConfiguracoes();
+                    })
+                    .catch(err => {
+                        console.error('Erro ao carregar o módulo de perfil:', err);
+                    });
+            }
             perfil: () => {
                 // Carregar dinamicamente o módulo de perfil
                 import('./modules/perfil.js')
