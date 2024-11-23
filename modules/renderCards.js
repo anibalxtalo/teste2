@@ -1,5 +1,6 @@
-cards: () => {
-    document.getElementById('dynamic-content').innerHTML = `
+export function renderDynamicCards() {
+    const dynamicContent = document.getElementById('dynamic-content');
+    dynamicContent.innerHTML = `
         <div id="dynamic-content">
             <div class="card-container" id="card-group-1">
                 <div class="card card-1" onclick="loadPage(1)">Card 1</div>
