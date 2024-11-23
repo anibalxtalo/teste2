@@ -80,7 +80,7 @@ function loadSet(setNumber) {
     const wrapper = document.getElementById('card-wrapper');
 
     // Requisição AJAX para carregar o conjunto de cards
-    fetch(`data/set-${setNumber}.json`)
+    fetch(`../data/set-${setNumber}.json`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro ao carregar o conjunto ${setNumber}`);
