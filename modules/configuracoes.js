@@ -2,170 +2,125 @@ export function renderConfiguracoes() {
     const contentDiv = document.getElementById('dynamic-content');
     contentDiv.innerHTML = `
         <style>
-            .config-container {
-                width: 100%;
-                max-width: 600px;
-                margin: auto;
-                overflow: hidden;
-                position: relative;
-            }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            overflow: hidden;
+        }
 
-            .card-wrapper {
-                display: flex;
-                transition: transform 0.3s ease-in-out;
-            }
+        #dynamic-content {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            overflow: hidden;
+        }
 
-            .card-set {
-                flex: 0 0 100%;
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 10px;
-                padding: 20px;
-                align-content: flex-start; /* Alinha os cards ao topo */
-            }
+        .card-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
 
-            .card {
-                background-color: #f4f4f4;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 20px;
-                display: flex;
-                align-items: flex-start; /* Alinha o conteúdo do card ao topo */
-                gap: 15px;
-                cursor: pointer;
-                transition: background-color 0.3s, transform 0.2s;
-            }
+        .card {
+            width: 95%;
+            height: 70px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
 
-            .card:hover {
-                background-color: #e0f7fa;
-                transform: scale(1.02);
-            }
+        .card-1 {
+            height: 70px;
+        }
 
-            .icon {
-                font-size: 28px;
-                color: #00796b;
-            }
+        .card-2 {
+            height: 140px;
+        }
 
-            .card-title {
-                font-size: 20px;
-                color: #333;
-            }
+        .card-3 {
+            height: 210px;
+        }
 
-            .back-button {
-                cursor: pointer;
-                font-size: 18px;
-                color: #00796b;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                margin-bottom: 15px;
-            }
-
-            .back-button:hover {
-                text-decoration: underline;
-            }
-        </style>
-
-        <div class="config-container">
-            <div class="card-wrapper" id="card-wrapper">
-                <!-- Inicialmente vazio, preenchido dinamicamente -->
-            </div>
+        .card-4 {
+            height: 280px;
+        }
+    </style>
+</head>
+<body>
+    <div id="dynamic-content">
+        <div class="card-container" id="card-group-1">
+            <div class="card card-1" onclick="loadPage(1)">Card 1</div>
+            <div class="card card-2" onclick="loadPage(2)">Card 2</div>
+            <div class="card card-3" onclick="loadPage(3)">Card 3</div>
+            <div class="card card-4" onclick="loadPage(4)">Card 4</div>
         </div>
-    `;
+    </div>
 
-    loadSet(1); // Carregar o primeiro conjunto de cards inicialmente
-}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        const dynamicContent = document.getElementById('dynamic-content');
 
-function loadSet(setNumber) {
-    const wrapper = document.getElementById('card-wrapper');
-    const path = `data/set-${setNumber}.json`; // Caminho ajustado para GitHub Pages
+        function loadPage(cardNumber) {
+            const currentGroup = document.getElementById('card-group-1');
 
-    console.log(`Tentando carregar o JSON do caminho: ${path}`); // Log do caminho usado no fetch
-
-    fetch(path)
-        .then(response => {
-            console.log(`Status da resposta para set-${setNumber}: ${response.status}`);
-            if (!response.ok) {
-                throw new Error(`Erro ao carregar o conjunto ${setNumber}: ${response.status} ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(`Dados carregados para o conjunto ${setNumber}:`, data);
-
-            // Criar o HTML dos cards
-            const cardSet = document.createElement('div');
-            cardSet.classList.add('card-set');
-
-            if (setNumber > 1) {
-                // Adiciona botão de "Voltar"
-                const backButton = document.createElement('div');
-                backButton.classList.add('back-button');
-                backButton.innerHTML = `
-                    <span class="material-icons">arrow_back</span> Voltar
-                `;
-                backButton.addEventListener('click', () => showPreviousSet());
-                cardSet.appendChild(backButton);
+            // Cria um novo grupo de cards
+            const newGroup = document.createElement('div');
+            newGroup.className = 'card-container';
+            newGroup.id = `card-group-${cardNumber}`;
+            newGroup.innerHTML = `
+                <div class="card card-1" onclick="goBack()">Voltar</div>
+            `;
+            for (let i = 1; i <= cardNumber; i++) {
+                newGroup.innerHTML += `<div class="card card-${cardNumber}">Novo Card ${i}</div>`;
             }
 
-            // Adiciona os cards
-            data.cards.forEach(card => {
-                const cardDiv = document.createElement('div');
-                cardDiv.classList.add('card');
-                cardDiv.innerHTML = `
-                    <span class="icon material-icons">${card.icon}</span>
-                    <span class="card-title">${card.title}</span>
-                `;
-                if (card.nextSet) {
-                    cardDiv.addEventListener('click', () => showNextSet(card.nextSet));
-                }
-                cardSet.appendChild(cardDiv);
-            });
+            dynamicContent.appendChild(newGroup);
 
-            wrapper.appendChild(cardSet);
-        })
-        .catch(error => {
-            console.error(`Erro capturado no carregamento do conjunto ${setNumber}:`, error);
-            // Mensagem para o usuário final
-            const errorDiv = document.createElement('div');
-            errorDiv.classList.add('error-message');
-            errorDiv.style.color = 'red';
-            errorDiv.innerHTML = `Não foi possível carregar o conjunto ${setNumber}. Tente novamente mais tarde.`;
-            wrapper.appendChild(errorDiv);
-        });
-}
+            // Anima o movimento dos grupos
+            gsap.fromTo(currentGroup, { x: 0 }, { x: '-100%', duration: 0.7, ease: 'power2.inOut' });
+            gsap.fromTo(newGroup, { x: '100%' }, { x: 0, duration: 0.7, ease: 'power2.inOut', onComplete: () => {
+                currentGroup.remove(); // Remove o grupo antigo após a animação
+            } });
+        }
 
-let currentSet = 0;
+        function goBack() {
+            const currentGroup = document.querySelector('.card-container:last-child');
+            const previousGroup = document.createElement('div');
+            previousGroup.className = 'card-container';
+            previousGroup.id = 'card-group-1';
+            previousGroup.innerHTML = `
+                <div class="card card-1" onclick="loadPage(1)">Card 1</div>
+                <div class="card card-2" onclick="loadPage(2)">Card 2</div>
+                <div class="card card-3" onclick="loadPage(3)">Card 3</div>
+                <div class="card card-4" onclick="loadPage(4)">Card 4</div>
+            `;
 
-// Exibe o próximo conjunto de cards
-function showNextSet(setNumber) {
-    if (typeof setNumber !== 'number' || setNumber <= 0) {
-        console.error(`Número inválido para o próximo conjunto: ${setNumber}`);
-        return;
-    }
+            dynamicContent.appendChild(previousGroup);
 
-    currentSet = setNumber - 1; // Ajustar para índice zero
-    const wrapper = document.getElementById('card-wrapper');
-
-    console.log(`Navegando para o conjunto ${setNumber}`); // Log da navegação
-
-    // Verifica se o conjunto já foi carregado
-    if (wrapper.children[currentSet]) {
-        wrapper.style.transform = `translateX(-${currentSet * 100}%)`;
-    } else {
-        loadSet(setNumber); // Carrega o novo conjunto
-        setTimeout(() => {
-            wrapper.style.transform = `translateX(-${currentSet * 100}%)`;
-        }, 300); // Garante que o conteúdo seja carregado antes de animar
-    }
-}
-
-// Volta ao conjunto anterior
-function showPreviousSet() {
-    const wrapper = document.getElementById('card-wrapper');
-    currentSet = Math.max(0, currentSet - 1);
-
-    console.log(`Voltando para o conjunto ${currentSet + 1}`); // Log da navegação para o conjunto anterior
-
-    wrapper.style.transform = `translateX(-${currentSet * 100}%)`;
+            // Anima o movimento dos grupos
+            gsap.fromTo(currentGroup, { x: 0 }, { x: '100%', duration: 0.7, ease: 'power2.inOut', onComplete: () => {
+                currentGroup.remove(); // Remove o grupo atual após a animação
+            } });
+            gsap.fromTo(previousGroup, { x: '-100%' }, { x: 0, duration: 0.7, ease: 'power2.inOut' });
+        }
+    </script>
 }
