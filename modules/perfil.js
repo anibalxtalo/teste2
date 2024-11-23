@@ -142,6 +142,19 @@ export function renderPerfil() {
     setupDropdown();
 }
 
+// Função setupDropdown corrigida
+function setupDropdown() {
+    const dropdown = document.getElementById('dropdown-menu');
+    document.addEventListener('click', (event) => {
+        const profileImage = document.querySelector('.profile-image-container');
+        if (profileImage.contains(event.target)) {
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        } else {
+            dropdown.style.display = 'none';
+        }
+    });
+}
+
 // Funções Auxiliares (adicionadas ao escopo global)
 window.customToggleDropdown = function () {
     const menu = document.getElementById('dropdown-menu');
