@@ -7,7 +7,7 @@ function loadSet(setNumber) {
         return;
     }
 
-    const path = `../data/set-${setNumber}.json`; // Caminho relativo para o JSON
+    const path = `/data/set-${setNumber}.json`; // Caminho relativo para o JSON
 
     console.log(`Tentando carregar o JSON do caminho: ${path}`); // Log do caminho usado no fetch
 
