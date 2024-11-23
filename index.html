@@ -135,6 +135,9 @@
                 <button onclick="loadModule('shopping')" aria-label="Compras">
                     <span class="material-icons">shopping_cart</span>
                 </button>
+                <button onclick="loadModule('cards')" aria-label="Cards">
+                    <span class="material-icons">view_module</span>
+                </button>
             </div>
             <div class="bottom-section">
                 <button class="settings-btn" onclick="loadModule('configuracao')" aria-label="Configurações">
@@ -199,6 +202,15 @@
                     })
                     .catch(err => {
                         console.error('Erro ao carregar o módulo de perfil:', err);
+                    });
+            },
+            cards: () => {
+                import('./modules/renderCards.js')
+                    .then(module => {
+                        module.renderCards();
+                    })
+                    .catch(err => {
+                        console.error('Erro ao carregar o módulo de cards:', err);
                     });
             }
         };
