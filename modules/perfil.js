@@ -12,8 +12,8 @@ export function renderPerfil() {
             }
 
             .card {
-                width: 95%;
-                max-width: 500px;
+                width: 90%; /* Largura fixa de 90% */
+                max-width: 600px; /* Limite máximo de largura */
                 background-color: #fff;
                 border: 1px solid #ddd;
                 border-radius: 8px;
@@ -22,6 +22,8 @@ export function renderPerfil() {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                flex-shrink: 0; /* Garante que o tamanho do card não encolha */
+                flex-grow: 0; /* Garante que o tamanho do card não expanda */
             }
 
             .card-header {
@@ -95,6 +97,7 @@ export function renderPerfil() {
                 margin: 0;
                 font-size: 16px;
                 color: #333;
+                word-wrap: break-word; /* Garante que o texto não quebre o layout */
             }
 
             .info-section .edit-icon {
